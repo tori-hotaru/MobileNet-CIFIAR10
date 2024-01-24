@@ -7,9 +7,9 @@ from MobileNetV2 import *
 from MobileNetV3 import *
 
 transform = transforms.Compose(
-    [transforms.Resize((224,224)),
+    [transforms.Resize((224, 224)),
      transforms.ToTensor(),
-     transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))])
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -19,11 +19,11 @@ if __name__ == '__main__':
                                             download=True, transform=transform)
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
-                                            shuffle=True, num_workers=2)
+                                              shuffle=True, num_workers=2)
 
-    net = MobileNetV1(3,10).to(device)
+    net = MobileNetV1(3, 10).to(device)
     # net = MobileNetV2(2, 10, 1.0).to(device)
-
+    # net = mobilenetv3(mode='small', n_class=10, input_size=224, dropout=0.2, width_mult=1.0).to(device)
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
@@ -38,7 +38,7 @@ if __name__ == '__main__':
             loss.backward()
             optimizer.step()
 
-            if i%5 == 0:
-                print('[%d, %5d] loss: %.3f' % (epoch+1, i+1, loss.item()))
-        
+            if i % 5 == 0:
+                print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, loss.item()))
+
         epoch += 1
